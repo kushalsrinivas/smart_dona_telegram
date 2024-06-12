@@ -7,6 +7,7 @@ def whoami(update, context):
     first_name = user.first_name
     last_name = user.last_name
     username = user.username
+    userid = user.id
 
     name = "<b>"+first_name +"</b>"
     if last_name:
