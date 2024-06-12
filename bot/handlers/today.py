@@ -8,29 +8,39 @@ def today(update, context):
     """
     user = update.message.from_user
     data = getMeetingInstance(user.id)
-    callInstanceID= data['data'][0]['callInstanceId']
+    # callInstanceID= data['data'][0]['callInstanceId']
     for instance in data['data']:
-        callInstanceID = instance['callInstanceId']
-        meetingInfo = getMeetingInfo(callInstanceID)
-        # transcription = getTranscription(callInstanceID)
-        # transcription  = " ".join([""+item['text'] for item in transcription['data']])
-        thumbnail =meetingInfo['data'][0]['host_image']
-        speakers = meetingInfo['data'][0]['speakers']
-        speaker_name = [speaker['name'] for speaker in speakers]
-        recording  = meetingInfo['data'][0]['recordings'][0]['recorded_video_url']
-        actionItems = "".join([f"\n {actionitem['action_item']} " for actionitem in meetingInfo['data'][0]['summary']['action_items2']])
-        tldr = meetingInfo['data'][0]['summary']['tldr'][1]
+        try :
+            callInstanceID = instance['callInstanceId']
+            meetingInfo = getMeetingInfo(callInstanceID)
+            transcription = getTranscription(callInstanceID)
+            transcription  = " ".join([""+item['text'] for item in transcription['data']])
+            thumbnail =meetingInfo['data'][0]['host_image']
+            speakers = meetingInfo['data'][0]['speakers']
+            speaker_name = [speaker['name'] for speaker in speakers]
+            recording = meetingInfo['data'][0]['recordings'][0]['recorded_video_url']
 
-        context.bot.send_video(chat_id=update.message.chat_id, video=recording)
-        context.bot.send_photo(chat_id=update.message.chat_id, photo =thumbnail)
-        update.message.reply_text(
-            "*SPEAKERS*\n"
-            "{}\n\n"
-            "*ACTION ITEMS*\n"
-            "{}\n\n"
-            "*TL;DR*\n"
-            "{}"
-            .format(" ,".join(speaker_name[2:]),actionItems,tldr))
+            try :
+                actionItems = "".join([f"\n {actionitem['action_item']} " for actionitem in meetingInfo['data'][0]['summary']['action_items2']])
+                tldr = meetingInfo['data'][0]['summary']['tldr'][1]
+            except Exception as e:
+                actionItems = "N/A (try again after sometime)"
+                tldr = "N/A (try again after sometime)"
+
+
+            context.bot.send_video(chat_id=update.message.chat_id, video=recording)
+            context.bot.send_photo(chat_id=update.message.chat_id, photo =thumbnail)
+            update.message.reply_text(
+                "*SPEAKERS*\n"
+                "{}\n\n"
+                "*ACTION ITEMS*\n"
+                "{}\n\n"
+                "*TL;DR*\n"
+                "{}"
+                .format(" ,".join(speaker_name[2:]),actionItems,tldr))
+        except Exception as e:
+            print(e)
+            pass
 def getMeetingInstance(currentUserId):
     today = datetime.now().date()
     # Get yesterday's date
