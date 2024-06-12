@@ -1,6 +1,5 @@
 import requests
 from telegram import  ParseMode
-from datetime import datetime, timedelta
 def fetchAndSend(update, context , start_date , end_date):
     user = update.message.from_user
     data = getMeetingInstance(user.id,start_date,end_date)
@@ -30,12 +29,17 @@ def fetchAndSend(update, context , start_date , end_date):
                 "{}\n\n"
                 "<b>TL;DR</b>\n"
                 "{}"
-                .format(" ,".join(speaker_name[2:]), actionItems, tldr),parse_mode=ParseMode.HTML)
+                .format(" ,".join(speaker_name[2:]), actionItems, tldr),parse_mode=ParseMode.HTML,
+                )
+
         except Exception as e:
             print(e)
             pass
 
-
+def talk_to_ai(update, context):
+    query = update.callback_query
+    query.answer()
+    query.edit_message_text(text="You clicked: Talk to AI")
 def getMeetingInstance(currentUserId,start_date,end_date):
         url = "https://api.goodmeetings.ai/v2/call/search-recording-based-client-email"
         payload = {
