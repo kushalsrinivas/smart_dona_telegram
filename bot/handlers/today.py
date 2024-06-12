@@ -24,7 +24,13 @@ def today(update, context):
         context.bot.send_video(chat_id=update.message.chat_id, video=recording)
         context.bot.send_photo(chat_id=update.message.chat_id, photo =thumbnail)
         update.message.reply_text(
-            '\nSPEAKERS  \n{} \n ACTION ITEMS \n{} \nTLDR \n{}'.format(" ,".join(speaker_name[2:]),actionItems,tldr))
+            "*SPEAKERS*\n"
+            "{}\n\n"
+            "*ACTION ITEMS*\n"
+            "{}\n\n"
+            "*TL;DR*\n"
+            "{}"
+            .format(" ,".join(speaker_name[2:]),actionItems,tldr))
 def getMeetingInstance(currentUserId):
     today = datetime.now().date()
     # Get yesterday's date
