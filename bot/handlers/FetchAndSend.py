@@ -1,4 +1,5 @@
 import requests
+from telegram import  ParseMode
 from datetime import datetime, timedelta
 def fetchAndSend(update, context , start_date , end_date):
     user = update.message.from_user
@@ -13,7 +14,7 @@ def fetchAndSend(update, context , start_date , end_date):
             recording = meetingInfo['data'][0]['recordings'][0]['recorded_video_url']
 
             try:
-                actionItems = "".join([f"\n {actionitem['action_item']} " for actionitem in
+                actionItems = "\n".join([f"• {actionitem['action_item']}" for actionitem in
                                        meetingInfo['data'][0]['summary']['action_items2']])
                 tldr = meetingInfo['data'][0]['summary']['tldr'][1]
             except Exception as e:
@@ -23,13 +24,13 @@ def fetchAndSend(update, context , start_date , end_date):
             context.bot.send_video(chat_id=update.message.chat_id, video=recording)
             context.bot.send_photo(chat_id=update.message.chat_id, photo=thumbnail)
             update.message.reply_text(
-                "*SPEAKERS*\n"
+                "<b>SPEAKERS</b>\n"
                 "{}\n\n"
-                "*ACTION ITEMS*\n"
+                "<b>ACTION ITEMS</b>\n"
                 "{}\n\n"
-                "*TL;DR*\n"
+                "<b>TL;DR</b>\n"
                 "{}"
-                .format(" ,".join(speaker_name[2:]), actionItems, tldr))
+                .format(" ,".join(speaker_name[2:]), actionItems, tldr),parse_mode=ParseMode.HTML)
         except Exception as e:
             print(e)
             pass
