@@ -8,9 +8,11 @@ def today(update, context):
     """
     user = update.message.from_user
     data = getMeetingInstance(user.id)
-    clientInstanceid= data['data'][0]['callInstanceId']
+    callInstanceID= data['data'][0]['callInstanceId']
+    thumbnail = data['data'][0]['host_image']
+    meetingInfo = getMeetingInfo(callInstanceID)
     update.message.reply_text(
-        '{}'.format(data['data']))
+        '{}'.format(meetingInfo['data'][0]['speakers']))
 
 
 def getMeetingInstance(currentUserId):
@@ -34,6 +36,20 @@ def getMeetingInstance(currentUserId):
     }
 
     response = requests.post(url, json=payload, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        response.raise_for_status()
+
+def getMeetingInfo(callInstanceID):
+    url = "https://api.goodmeetings.ai/v2/call/get-meeting-instance-info?callInstanceId="+callInstanceID
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0MmYwZjU0Yjg4MjAwMGU0NzE0ZDQiLCJpYXQiOjE3MTY4MTA0NTQsImV4cCI6MTc0ODM0NjQ1NCwidHlwZSI6ImFjY2VzcyJ9.OQLGGqS4jShahdC3wTaJ5yj4g4MYkeXv-jBXi-AD1sM"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
+
+    response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
     else:
