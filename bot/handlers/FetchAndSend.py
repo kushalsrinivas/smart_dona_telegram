@@ -1,8 +1,8 @@
 import requests
 from telegram import  ParseMode
+import os
 def fetchAndSend(update, context , start_date , end_date):
-    user = update.message.from_user
-    data = getMeetingInstance(user.id,start_date,end_date)
+    data = getMeetingInstance(os.getenv("userId"),start_date,end_date)
     for instance in data['data']:
         try:
             callInstanceID = instance['callInstanceId']
