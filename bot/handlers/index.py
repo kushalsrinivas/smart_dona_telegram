@@ -15,7 +15,6 @@ from .join import join
 from .today import today
 from .oneweek import oneweek
 from .onemonth import onemonth
-
 command_map = {
     'start': start,
     'echo' : echo,

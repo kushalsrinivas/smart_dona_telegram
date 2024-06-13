@@ -1,4 +1,5 @@
 import requests
+from .checkuser import checkUser
 
 
 def join(update, context):
@@ -6,11 +7,12 @@ def join(update, context):
     /hello
     just say hello and reply
     """
-    user = update.message.from_user
-    url = update.message.text
-    data = join_meeting(url ,user.id)
-    update.message.reply_text(
-        'joining  {} in a few moments'.format(update.message.text))
+    if checkUser(update, context):
+        user = update.message.from_user
+        url = update.message.text
+        data = join_meeting(url ,user.id)
+        update.message.reply_text(
+            'joining  {} in a few moments'.format(update.message.text))
 
 
 def join_meeting(meeting_url, client_client_id, ):

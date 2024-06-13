@@ -1,8 +1,4 @@
 def whoami(update, context):
-    """
-    /whoami: 
-    who am i?
-    """
     user = update.message.from_user
     first_name = user.first_name
     last_name = user.last_name
