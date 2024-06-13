@@ -17,6 +17,7 @@ class Config:
         self.botname = self.config[self.mode][0]['botname']
         self.username = self.config[self.mode][0]['username']
 
+
     def get_mode(self):
         return self.mode
 
