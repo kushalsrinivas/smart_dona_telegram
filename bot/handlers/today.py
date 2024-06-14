@@ -1,12 +1,13 @@
 from .FetchAndSend import fetchAndSend
 from datetime import datetime, timedelta
-from .checkuser import checkUser
+from .checkuser import User
 def today(update, context):
     """
     /hello
     just say hello and reply
     """
-    if checkUser(update,context):
+    if User.checkUser(update,context):
+        print("user id is set :",User.getUserID())
         today = datetime.now().date()
         # Get yesterday's date
         yesterday = today - timedelta(days=1)

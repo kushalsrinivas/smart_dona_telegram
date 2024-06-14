@@ -1,14 +1,14 @@
 import requests
 from datetime import datetime, timedelta
 from .FetchAndSend import fetchAndSend
-from .checkuser import checkUser
+from .checkuser import User
 
 def onemonth(update, context):
     """
     /hello
     just say hello and reply
     """
-    if checkUser(update , context):
+    if User.checkUser(update , context):
         today = datetime.now().date()
         # Get yesterday's date
         yesterday = today - timedelta(days=31)

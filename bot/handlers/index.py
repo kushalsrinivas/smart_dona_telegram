@@ -15,6 +15,7 @@ from .join import join
 from .today import today
 from .oneweek import oneweek
 from .onemonth import onemonth
+from .setuserid import setUserID
 command_map = {
     'start': start,
     'echo' : echo,
@@ -24,6 +25,7 @@ command_map = {
     'onemonth': onemonth,
     'whoami' : whoami,
     'hello' : hello,
+    'setuserid' : setUserID,
     'help' : help_command
     }
 
